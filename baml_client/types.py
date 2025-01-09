@@ -45,10 +45,10 @@ class TransactionType(str, Enum):
     Debit = "Debit"
 
 class AccountTransaction(BaseModel):
-    txn_type: "TransactionType"
     amount: float
     month: str
 
 class CashFlowData(BaseModel):
     account_name: str
     txns: List["AccountTransaction"]
+    txn_type: "TransactionType"

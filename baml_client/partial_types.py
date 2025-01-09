@@ -30,10 +30,10 @@ from .types import Checked, Check
 
 
 class AccountTransaction(BaseModel):
-    txn_type: Optional[types.TransactionType] = None
     amount: Optional[float] = None
     month: Optional[str] = None
 
 class CashFlowData(BaseModel):
     account_name: Optional[str] = None
     txns: List["AccountTransaction"]
+    txn_type: Optional[types.TransactionType] = None

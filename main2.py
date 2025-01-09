@@ -12,12 +12,13 @@ def read_excel_file(file_path):
 async def main():
     excel_file = "bennbollay-property-december-preliminary.xlsx"
     cash_flow_csv_string = read_excel_file(excel_file)
-    cash_flow_data_stream = b.stream.ExtractCashFlowData(cash_flow_csv=cash_flow_csv_string)
+    print(cash_flow_csv_string)
+    # cash_flow_data_stream = b.stream.ExtractCashFlowData(cash_flow_csv=cash_flow_csv_string)
 
-    async for cash_flow_data in cash_flow_data_stream:
-        print(".", end="", flush=True)
+    # async for cash_flow_data in cash_flow_data_stream:
+    #     print(".", end="", flush=True)
     
-    print(await cash_flow_data_stream.get_final_response())
+    # print(await cash_flow_data_stream.get_final_response())
 
 if __name__ == "__main__":
     asyncio.run(main())

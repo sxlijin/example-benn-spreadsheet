@@ -4,7 +4,6 @@ enum TransactionType {
 }
 
 class AccountTransaction {
-  txn_type TransactionType
   amount float
   month string @description("Example: 'May 2024'")
 }
@@ -12,6 +11,7 @@ class AccountTransaction {
 class CashFlowData {
   account_name string
   txns AccountTransaction[]
+  txn_type TransactionType
 }
 
 // Create a function to extract the resume from a string.
@@ -30,7 +30,116 @@ function ExtractCashFlowData(cash_flow_csv: string) -> CashFlowData[] {
 }
 
 // Test the function with a sample resume. Open the VSCode playground to run this.
-test cash_flow_data {
+test cash_flow_data_short {
+  functions [ExtractCashFlowData]
+  args {
+    cash_flow_csv #"
+OMC Cash Flow - 12 Month,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13
+Exported On: 01/06/2025 04:53 PM,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+A Management Co.,,,,,,,,,,,,,
+Properties: Example Property,,,,,,,,,,,,,
+Period Range: Jan 2024 to Dec 2024,,,,,,,,,,,,,
+Accounting Basis: Cash,,,,,,,,,,,,,
+Level of Detail: Detail View,,,,,,,,,,,,,
+Include Zero Balance GL Accounts: No,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Account Name,Jan 2024,Feb 2024,Mar 2024,Apr 2024,May 2024,Jun 2024,Jul 2024,Aug 2024,Sep 2024,Oct 2024,Nov 2024,Dec 2024,Total
+Operating Income & Expense,,,,,,,,,,,,,
+    Income,,,,,,,,,,,,,
+        SCHEDULED RENT,,,,,,,,,,,,,
+            Gross Rent Potential,0,0,0,0,57017.98,94010,94010,94010,94010,94010,94010,94010,715087.98
+            Gain/(Loss) to Lease,0,0,0,0,0,-6675,-6825,-6905,-6905,-6905,-6805,-6985,-48005
+        Total SCHEDULED RENT,0,0,0,0,57017.98,87335,87185,87105,87105,87105,87205,87025,667082.98
+        RENT ADJUSTMENTS,,,,,,,,,,,,,
+            Vacancy Loss,0,0,0,0,0,-3264.83,-2880.48,0,0,0,-3090,-1736.13,-10971.44
+            Concessions,0,0,0,0,0,-1774.17,-2185.99,-39.84,0,0,-1000,0,-5000
+            Current Rent Uncollected,0,0,0,0,0,-4538,-3131.5,-1425,-95,-1640,-1575,-3139.75,-15544.25
+            Prepaid Rent Prior Period,0,0,0,0,0,-34232.1,-44202.29,-43879.75,-48518.5,-46470.5,-37908.5,-40959.75,-296171.39
+            Prior Rent,0,0,0,0,0,530,5169.35,1706.5,4021,216,256,0,11898.85
+            Prepaid Rent,0,0,0,0,34232.1,44202.29,43879.75,48518.5,46470.5,37908.5,40959.75,41909.5,338080.89
+        Total RENT ADJUSTMENTS,0,0,0,0,34232.1,923.19,-3351.16,4880.41,1878,-9986,-2357.75,-3926.13,22292.66
+
+    "#
+  }
+}
+test cash_flow_data_medium {
+  functions [ExtractCashFlowData]
+  args {
+    cash_flow_csv #"
+OMC Cash Flow - 12 Month,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13
+Exported On: 01/06/2025 04:53 PM,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+A Management Co.,,,,,,,,,,,,,
+Properties: Example Property,,,,,,,,,,,,,
+Period Range: Jan 2024 to Dec 2024,,,,,,,,,,,,,
+Accounting Basis: Cash,,,,,,,,,,,,,
+Level of Detail: Detail View,,,,,,,,,,,,,
+Include Zero Balance GL Accounts: No,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+Account Name,Jan 2024,Feb 2024,Mar 2024,Apr 2024,May 2024,Jun 2024,Jul 2024,Aug 2024,Sep 2024,Oct 2024,Nov 2024,Dec 2024,Total
+Operating Income & Expense,,,,,,,,,,,,,
+    Income,,,,,,,,,,,,,
+        SCHEDULED RENT,,,,,,,,,,,,,
+            Gross Rent Potential,0,0,0,0,57017.98,94010,94010,94010,94010,94010,94010,94010,715087.98
+            Gain/(Loss) to Lease,0,0,0,0,0,-6675,-6825,-6905,-6905,-6905,-6805,-6985,-48005
+        Total SCHEDULED RENT,0,0,0,0,57017.98,87335,87185,87105,87105,87105,87205,87025,667082.98
+        RENT ADJUSTMENTS,,,,,,,,,,,,,
+            Vacancy Loss,0,0,0,0,0,-3264.83,-2880.48,0,0,0,-3090,-1736.13,-10971.44
+            Concessions,0,0,0,0,0,-1774.17,-2185.99,-39.84,0,0,-1000,0,-5000
+            Current Rent Uncollected,0,0,0,0,0,-4538,-3131.5,-1425,-95,-1640,-1575,-3139.75,-15544.25
+            Prepaid Rent Prior Period,0,0,0,0,0,-34232.1,-44202.29,-43879.75,-48518.5,-46470.5,-37908.5,-40959.75,-296171.39
+            Prior Rent,0,0,0,0,0,530,5169.35,1706.5,4021,216,256,0,11898.85
+            Prepaid Rent,0,0,0,0,34232.1,44202.29,43879.75,48518.5,46470.5,37908.5,40959.75,41909.5,338080.89
+        Total RENT ADJUSTMENTS,0,0,0,0,34232.1,923.19,-3351.16,4880.41,1878,-9986,-2357.75,-3926.13,22292.66
+        OTHER INCOME,,,,,,,,,,,,,
+            Utility Income,0,0,0,0,41.94,5003.67,5566.44,5854.77,5969,5440,5627,5327.74,38830.56
+            Month-to-Month Fees,0,0,0,0,0,400,200,400,200,200,200,200,1800
+            Rent Refunds,0,0,0,0,0,0,-357.88,-15.02,0,0,0,0,-372.9
+            Forfeitures/Damages,0,0,0,0,0,225,1810,0,0,0,512.59,325,2872.59
+            Lease Buy Out Fees,0,0,0,0,0,0,3490,0,0,0,0,0,3490
+            Administrative Fees,0,0,0,0,0,0,0,0,0,0,0,600,600
+            Late Charges & NSF Fees,0,0,0,0,0,0,0,0,165.85,136,292.75,0,594.6
+            Pet Fees,0,0,0,0,800,400,400,400,200,0,200,200,2600
+            Pet Rent,0,0,0,0,22.58,358.33,413.71,425,500,475,500,515.32,3209.94
+            Laundry & Vending Income,0,0,0,0,0,0,128.58,0,0,599.95,143.98,0,872.51
+            Liability Insurance Fee,0,0,0,0,0,0,0,29,43.5,7.5,12.5,-2,90.5
+        Total OTHER INCOME,0,0,0,0,864.52,6387,11650.85,7093.75,7078.35,6858.45,7488.82,7166.06,54587.8
+    Total Operating Income,0,0,0,0,92114.6,94645.19,95484.69,99079.16,96061.35,83977.45,92336.07,90264.93,743963.44
+    Expense,,,,,,,,,,,,,
+        MARKETING EXPENSE,,,,,,,,,,,,,
+            Mini Models/Move In Gifts,0,0,0,0,0,0,32.22,0,0,0,0,0,32.22
+            Internet Advertising,0,0,0,0,1154.51,1103.8,3498.7,2363.28,2362.4,2363.28,2663.28,2574.9,18084.15
+"            Brochures, Business Cards",0,0,0,0,0,0,0,0,0,0,0,14.08,14.08
+            Signage,0,0,0,0,0,0,43.36,113.73,66.12,257.95,0,291.93,773.09
+            Resident Retention/Newsletters/Renewal Carpet Cleaning,0,0,0,0,0,0,0,0,157.81,384.21,0,1044.88,1586.9
+        Total MARKETING EXPENSE,0,0,0,0,1154.51,1103.8,3574.28,2477.01,2586.33,3005.44,2663.28,3925.79,20490.44
+        ADMINISTRATIVE EXPENSE,,,,,,,,,,,,,
+            Office Supplies,0,0,0,0,1,59.34,62.52,61.44,54.31,163.05,57.9,188.17,647.73
+            Postage,0,0,0,0,0,7.18,11.32,25.43,0,40.25,0,40.23,124.41
+            Management Fees,0,0,0,0,0,7470.39,3819.39,3963.17,3840.85,3360.7,3693.44,3610.6,29758.54
+            Training,0,0,0,0,0,0,0,0,140,0,25,0,165
+            Mileage Expense,0,0,0,0,0,0,0,0,360,160,0,167.85,687.85
+            Legal Expense,0,0,0,0,0,4718.75,543.93,670,-495,0,0,0,5437.68
+            Accounting Expense,0,0,0,0,0,0,0,0,0,10767.82,0,0,10767.82
+            Telephone/Cable/Internet,0,0,0,0,48.28,142.74,182.19,152.72,145.76,158.42,160.21,154.47,1144.79
+            Technology Services,0,0,0,0,251.61,439.61,373.62,325,325,366.82,543.32,325,2949.98
+            AppFolio Fees,0,0,0,0,127.97,166.3,176.3,175.3,174.56,170.3,165.3,165.3,1321.33
+            Miscellaneous Administrative,0,0,0,0,0,44,0,168.45,49.1,0,0,212.17,473.72
+        Total ADMINISTRATIVE EXPENSE,0,0,0,0,428.86,13048.31,5169.27,5541.51,4594.58,15187.36,4645.17,4863.79,53478.85
+        PAYROLL EXPENSES,,,,,,,,,,,,,
+            Manager's Salary,0,0,0,0,2125.76,3336.83,3152.87,3101.42,4599.89,3125.78,4497.57,2884.41,26824.53
+            Assistant Manager's Salar,0,0,0,0,0,0,164.48,0,0,0,0,0,164.48
+            Maintenance Payroll,0,0,0,0,1663.42,2287.14,3140.47,2560.01,2674.31,2799.06,3989.01,2523.51,21636.93
+            Assistant Maintenance P/R,0,0,0,0,1421.43,1905.12,2734.2,2240.28,2246.87,2308.51,3297.39,2116.8,18270.6
+            Payroll Tax Expense,0,0,0,0,658.7,930.35,1298.75,1228.08,1283.25,1200.07,1618.69,1007.33,9225.22
+            Employee Health Insurance,0,0,0,0,0,20.42,18.27,57.59,937.88,-883.47,20.42,20.42,191.53
+            Employee Benefits,0,0,0,0,0,2.47,0,10.26,0,0,0,0,12.73
+        Total PAYROLL EXPENSES,0,0,0,0,5869.31,8482.33,10509.04,9197.64,11742.2,8549.95,13423.08,8552.47,76326.02
+    "#
+  }
+}
+test cash_flow_data_long {
   functions [ExtractCashFlowData]
   args {
     cash_flow_csv #"
@@ -178,7 +287,6 @@ Cash Flow,0,0,0,0,83241.62,22008.34,19368.15,30174.74,23675.58,2801.41,18514.81,
 Beginning Cash,0,0,0,0,0,83241.62,105249.96,124618.11,154792.85,178468.43,181269.84,199784.65,0
 Beginning Cash + Cash Flow,0,0,0,0,83241.62,105249.96,124618.11,154792.85,178468.43,181269.84,199784.65,219919.33,219919.33
 Actual Ending Cash,0,0,0,0,83241.62,105249.96,124618.11,154792.85,178468.43,181269.84,199784.65,219919.33,219919.33
-
 
     "#
   }
